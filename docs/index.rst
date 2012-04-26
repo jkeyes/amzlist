@@ -16,7 +16,7 @@ A linked list implementation by John Keyes.
 Getting the code
 ----------------
 
-The simplest way is to clone the repository:
+The simplest way is to clone `the repository <https://github.com/jkeyes/amzlist>`_ from GitHub:
 
 ::
 
