@@ -2,3 +2,7 @@
 
 nose==1.1.2
 coverage==3.5.1
+Pygments==1.5
+Jinja2==2.6
+docutils==0.8.1
+sphinx==1.1.3
