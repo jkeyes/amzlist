@@ -1,0 +1,20 @@
+amzlist
+=======
+
+A linked list implementation.
+
+Usage
+-----
+
+    from amzlist import LinkedList
+
+    lnk_lst = LinkedList()
+    lnk_lst.prepend(1)
+    lnk_lst.prepend("2")
+    lnk_lst.prepend([3])
+    lnk_lst.prepend({ "4": 5.0 })
+
+    print lnk_lst # {'4': 5.0}->[3]->2->1
+
+For more detailed usage see:
+    http://amzlist.readthedocs.org
