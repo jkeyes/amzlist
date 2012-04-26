@@ -20,7 +20,7 @@ class Node(object):
         """ Data text """
 
     def __setattr__(self, key, value):
-        """ Override __setattr__ to ensure that next is a Node. """
+        """ Override `__setattr__` to ensure that next is a Node. """
         if key == "next":
             if value is not None:
                 if not isinstance(value, Node):
@@ -42,12 +42,12 @@ class LinkedList(object):
 
     @property
     def next(self):
-        """ Returns the next Node. """
+        """ Returns the `next` Node. """
         return self.first_node.next
 
     @property
     def data(self):
-        """ Returns the data for the first Node. """
+        """ Returns the `data` for the first Node. """
         return self.first_node.data
 
     @property
@@ -62,7 +62,7 @@ class LinkedList(object):
         return None
 
     def prepend(self, node):
-        """ Insert a Node at the head. """
+        """ Inserts `node` at the head of the LinkedList. """
         if not isinstance(node, Node):
             # If the node parameter is not a Node then update it
             # to refer to one.
@@ -74,7 +74,7 @@ class LinkedList(object):
         self.first_node = node
 
     def append(self, node):
-        """ Insert a Node at the tail. """
+        """ Inserts `node` at the tail of the LinkedList. """
         if not isinstance(node, Node):
             # If the node parameter is not a Node then update it
             # to refer to one.
@@ -88,7 +88,7 @@ class LinkedList(object):
             self.last_node.next = node
 
     def insert(self, node, after):
-        """ Insert a Node after the specified Node. """
+        """ Inserts `node` and makes `after.next` refer to it. """
         if not isinstance(after, Node):
             # If the after parameter is not a Node raise an error.
             raise TypeError("After must be a Node not a %s" % (type(after)))
@@ -102,16 +102,16 @@ class LinkedList(object):
         after.next = node
 
     def remove(self, node):
-        """ Remove the specified Node. 
+        """ Remove the specified `node`. 
 
-        If the `node` parameter is a Node, and it has data and 
-        a next Node then the first Node with encountered that
-        has the same data and next attribute values will be
+        If the `node` parameter is a Node, and it has `data` and 
+        a `next` Node then the first Node with encountered that
+        has the same `data` and `next` attribute values will be
         removed.
 
-        If the node parameter is a value other than a Node or a 
-        Node with just a data attribute value, then the first node 
-        encountered with the same data attribute is removed.
+        If the `node` parameter is a value other than a Node or a 
+        Node with just a `data` attribute value, then the first node 
+        encountered with the same `data` attribute is removed.
         """
         curr, prev = self.find(node, inc_prev=True)
         if curr:
@@ -120,18 +120,18 @@ class LinkedList(object):
     def find(self, node, inc_prev=None):
         """ Find the specified Node.
 
-        If the `node` parameter is a Node, and it has data and 
-        a next Node then the first Node with encountered that
-        has the same data and next attribute values will match.
+        If the `node` parameter is a Node, and it has `data` and 
+        a `next` Node then the first Node with encountered that
+        has the same `data` and `next` attribute values will match.
 
-        If the node parameter is a value other than a Node or a 
-        Node with just a data attribute value, then the first node 
-        encountered with the same data attribute value will match.
+        If the `node `parameter is a value other than a Node or a 
+        Node with just a `data` attribute value, then the first node 
+        encountered with the same `data` attribute value will match.
 
-        If inc_prev is True, this method returns the node and 
+        If `inc_prev` is `True`, this method returns the node and 
         it's previous node in a tuple, otherwise it returns the node.
 
-        This method returns None if the node cannot be found.
+        This method returns `None` if the node cannot be found.
         """
         if inc_prev is None:
             # Default include previous node to False
@@ -167,7 +167,7 @@ class LinkedList(object):
         raise ValueError("Node %s could not be found." % (node.data))
 
     def _remove(self, curr, prev):
-        """ Remove the node curr and update the next attribute for prev. """
+        """ Remove `curr` and update the next attribute for `prev`. """
         if prev:
             # If there is a previous node then update it's next attribute
             # to refer to the next node of the node that is being removed.
@@ -181,7 +181,7 @@ class LinkedList(object):
         del curr
 
     def as_list(self):
-        """ Returns a list of Nodes. """
+        """ Returns this LinkedList as a `list` of Nodes. """
         nodes = []
         node = self.first_node
         while node:
@@ -190,11 +190,11 @@ class LinkedList(object):
         return nodes
 
     def __len__(self):
-        """ Returns the lenght/size of the list. """
+        """ Returns the length/size of this LinkedList. """
         return len(self.as_list())
 
     def __str__(self):
-        """ The string representation of the list. """
+        """ The string representation of the LinkedList. """
         return "->".join([str(n.data) for n in self.as_list()])
 
     def reverse_iterative(self):
