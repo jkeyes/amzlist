@@ -124,7 +124,7 @@ class LinkedList(object):
         a `next` Node then the first Node with encountered that
         has the same `data` and `next` attribute values will match.
 
-        If the `node `parameter is a value other than a Node or a 
+        If the `node` parameter is a value other than a Node or a 
         Node with just a `data` attribute value, then the first node 
         encountered with the same `data` attribute value will match.
 
