@@ -221,3 +221,59 @@ class ListTest(TestCase):
         lnkd_list = self.linked_list
         new_list = self.linked_list.reverse_recursive()
         self.assertEqual(0, len(new_list))
+
+    def test_push_pop(self):
+        lnkd_list = self.linked_list
+        self.assertEqual(0, len(lnkd_list))
+
+        lnkd_list.push("Item 1")
+        lnkd_list.push("Item 2")
+        self.assertEqual(2, len(lnkd_list))
+
+        node = lnkd_list.pop()
+        self.assertEqual("Item 2", node.data)
+        self.assertEqual(1, len(lnkd_list))
+
+
+
+class CycleTest(TestCase):
+
+    def setUp(self):
+        # initialize the list with Nodes
+        lnkd_list = LinkedList(strict=True)
+        self.node_john = Node('John')
+        lnkd_list.append(self.node_john)
+        self.node_james = Node('James')
+        lnkd_list.append(self.node_james)
+        self.node_joe = Node('Joe')
+        lnkd_list.append(self.node_joe)
+        self.lnkd_list = lnkd_list
+
+    @raises(ValueError)
+    def test_cycle_immediate(self):
+        """ Test to make sure cycle detection is working. """
+        # create another node, Jules. Point it's next at John, and
+        # John's next at Jules.
+        # John -> Jules -> John
+        node_jules = Node('Jules')
+        self.node_john.next = node_jules
+        node_jules.next = self.node_john
+
+    @raises(ValueError)
+    def test_cycle_removed(self):
+        """ Test to make sure cycle detection is working. """
+        # create another node, Jules. Point it's next at John, and
+        # James's next at Jules. Joe is orpaned.
+        # John -> James -> Jules -> John | None -> Joe -> None
+        node_jules = Node('Jules')
+        self.node_james.next = node_jules
+        node_jules.next = self.node_john
+
+class ManyNodesTest(TestCase):
+
+    def test_many(self):
+        """ Tests the list can handle a large number of Nodes. """
+        lnkd_list = LinkedList()
+        for i in range(2**16):
+            lnkd_list.prepend(i)
+        self.assertEqual(2**16, lnkd_list.data + 1)

@@ -5,10 +5,11 @@
 #
 
 class Node(object):
-    """ A Node is a simple object with two attributes, next and data.
+    """ A Node is a simple object with two attributes, `next` and `data`.
 
-    Data stores the content, and next holds a reference to another Node.
+    `data` stores a value, and `next` holds a reference to another Node.
     """
+    strict = False
 
     def __init__(self, data):
         """ Initialize a new Node with the specified data. """
@@ -21,10 +22,21 @@ class Node(object):
 
     def __setattr__(self, key, value):
         """ Override `__setattr__` to ensure that next is a Node. """
-        if key == "next":
+        if key == "next" and value:
             if value is not None:
                 if not isinstance(value, Node):
                     raise TypeError
+
+            if Node.strict and value.next:
+                # If we are in strict mode we check to make sure this
+                # modification to `next` will not create a cycle.
+                node = value.next
+                while node:
+                    if node == self:
+                        raise ValueError("Cannot insert %s cycle detected" \
+                                % (value.data))
+                    node = node.next
+
         super(Node, self).__setattr__(key, value)
 
     def __str__(self):
@@ -35,8 +47,12 @@ class Node(object):
 class LinkedList(object):
     """ A LinkedList implementation. """
 
-    def __init__(self):
+    def __init__(self, strict=None):
         """ Initialize a new LinkedList. """
+        if strict is None:
+            strict = False
+        Node.strict = strict
+
         super(LinkedList, self).__init__()
         self.first_node = None
 
@@ -100,6 +116,16 @@ class LinkedList(object):
 
         node.next = after.next
         after.next = node
+
+    def push(self, node):
+        """ Prepends a Node to the head. """
+        self.prepend(node)
+
+    def pop(self):
+        """ Returns the Node from the head, and removes it. """
+        res = self.first_node
+        self.first_node = self.first_node.next
+        return res
 
     def remove(self, node):
         """ Remove the specified `node`. 
@@ -180,23 +206,6 @@ class LinkedList(object):
         # Delete the node that has been delinked.
         del curr
 
-    def as_list(self):
-        """ Returns this LinkedList as a `list` of Nodes. """
-        nodes = []
-        node = self.first_node
-        while node:
-            nodes.append(node)
-            node = node.next
-        return nodes
-
-    def __len__(self):
-        """ Returns the length/size of this LinkedList. """
-        return len(self.as_list())
-
-    def __str__(self):
-        """ The string representation of the LinkedList. """
-        return "->".join([str(n.data) for n in self.as_list()])
-
     def reverse_iterative(self):
         """ Returns a new LinkedList with the Nodes in reverse order. 
 
@@ -243,3 +252,20 @@ class LinkedList(object):
         # Node reference is None, so we've reached the end of
         # the LinkedList.
         return new_list
+
+    def as_list(self):
+        """ Returns this LinkedList as a `list` of Nodes. """
+        nodes = []
+        node = self.first_node
+        while node:
+            nodes.append(node)
+            node = node.next
+        return nodes
+
+    def __len__(self):
+        """ Returns the length/size of this LinkedList. """
+        return len(self.as_list())
+
+    def __str__(self):
+        """ The string representation of the LinkedList. """
+        return "->".join([str(n.data) for n in self.as_list()])
